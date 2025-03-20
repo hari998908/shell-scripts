@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Delaration of Variables
-# Person1 = Hari
-# Person2 = Ramesh
+Person1 = Hari
+Person2 = Ramesh
 
-echo "Hari :: Hi Ramesh ! how are you?"
-echo "Ramesh :: Good ! How are you doing Hari?"
-echo "Hari :: Fine ! How is your job?"
-echo "Ramesh :: Not bad ! I woild like to switch my career into Devops"
+echo "$Person1 :: Hi $Person2 ! how are you?"
+echo "$Person2 :: Good ! How are you doing $Person1?"
+echo "$Person1 :: Fine ! How is your job?"
+echo "$Person2 :: Not bad ! I woild like to switch my career into Devops"
