@@ -10,24 +10,24 @@ else
     echo "You are super user."
 fi
 
-dnf install mysql -y
+dnf remove mysql -y
 
 if [ $? -ne 0 ]
 then
-    echo "Installation of mysql...FAILURE"
+    echo "Un Installation of mysql...FAILURE"
     exit 1
 else
-    echo "Installation of mysql...SUCCESS"
+    echo "Un Installation of mysql...SUCCESS"
 fi
 
-dnf install git -y
+dnf remove git -y
 
 if [ $? -ne 0 ]
 then
-    echo "Installation of git...FAILURE"
+    echo "UnInstallation of git...FAILURE"
     exit 1
 else
-    echo "Installation of Git...SUCCESS"
+    echo "UnInstallation of Git...SUCCESS"
 fi
 
 echo "is script proceeding?"
