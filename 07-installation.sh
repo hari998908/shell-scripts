@@ -6,12 +6,12 @@ if [ $USERID -ne 0 ]
 then 
      echo "Run the script using Root Users"
 else
-     echo "Youbare the root User" 
+     echo "You are the root User" 
      exit 1
 fi
 
-#dnf install mysql -y
-dnf remove mysql -y
+dnf install mysql -y
+#dnf remove mysql -y
 
 if [$? -ne 0]
 then
@@ -20,8 +20,8 @@ else
     echo "MY SQL installation....SUCCESSFUL"
 fi
 
-#dnf install git -y
-dnf remove git -y
+dnf install git -y
+#dnf remove git -y
 
 if [$? -ne 0]
 then
