@@ -10,7 +10,8 @@ else
      exit 1
 fi
 
-dnf install mysql -y
+#dnf install mysql -y
+dnf remove mysql -y
 
 if [$? -ne 0]
 then
@@ -19,7 +20,8 @@ else
     echo "MY SQL installation....SUCCESSFUL"
 fi
 
-dnf install git -y
+#dnf install git -y
+dnf remove git -y
 
 if [$? -ne 0]
 then
