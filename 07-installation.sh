@@ -3,31 +3,27 @@
 USERID=$(id -u)
 
 if [ $USERID -ne 0 ]
-then
-    echo "Please run this script with root access."
-    exit 1 # manually exit if error comes.
+then 
+     echo "Run the script using Root Users"
 else
-    echo "You are super user."
+     echo "Youbare the root User" 
+     exit 1
 fi
 
 dnf install mysql -y
 
-if [ $? -ne 0 ]
+if [$? -ne 0]
 then
-    echo "Installation of mysql...FAILURE"
-    exit 1
+    echo "My SQL installation...FAILED"
 else
-    echo "Installation of mysql...SUCCESS"
+    echo "MY SQL installation....SUCCESSFUL"
 fi
 
 dnf install git -y
 
-if [ $? -ne 0 ]
+if [$? -ne 0]
 then
-    echo "Installation of git...FAILURE"
-    exit 1
+    echo "Git installation ...FAILED"
 else
-    echo "Installation of Git...SUCCESS"
-fi
-
-echo "is script proceeding?"
+    echo "Git Installation....SUCCESSFUL"
+fi   
