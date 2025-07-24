@@ -23,6 +23,9 @@ then
     exit 1
 else
     echo "GIT Successfully installed"
+fi
+
+if [$? -ne 0]
 
 dnf install nginx -y &>>$LOGFILE
 then 
