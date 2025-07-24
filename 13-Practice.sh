@@ -23,3 +23,18 @@ VALIDATE (){
 if [$USERID -ne 0]
 then
     echo "Please run this script with Super User"
+    exit 1
+else
+    echo "Ypou are super user"
+fi
+
+dnf install mysql -y &>>LOGFILE
+VALIDATE $? "Installing MY SQL"
+
+dnf install git -y &>>LOGFILE
+VALIDATE $? "Installing GIT"
+
+dnf install docker -y &>>LOGFILE
+VALIDATE $? "Installing Docker"
+
+
