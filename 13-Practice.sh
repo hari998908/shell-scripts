@@ -1,36 +1,25 @@
 #!/bin/bash
-
 USERID=$(id -u)
-TIMESTAMP=$(date +%F-%H-%M-%S)
-SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+TIMESTAMP=$(date +%F:%H:%M:%S)
+SCRIPT_NAME=$(echo $0)
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
-echo "Script is Executing $TIMESTAMP"
+R="\e[31m"
+G="\e[32m"
+N="\e[0m"
 
-if [  $USERID -ne 0 ]
+echo "Script Started Executing at: $TIMESTAMP"
+
+VALIDATE (){
+    if [$1 ne 0]
+    then
+        echo -e "$2...$R Failure $N"
+        exit 1
+    else
+        echo -e "$1...$G SUCCESS $N"
+    fi    
+}
+
+if [$USERID -ne 0]
 then
-    echo "Please run the script with Root Access"
-    exit 1
-else
-    echo "You are Super User"
-fi
-
-dnf install mysql -y &>>$LOGFILE
-
-if [ $? -ne 0 ]
-then
-    echo "GIT not installed"
-    exit 1
-else
-    echo "GIT Successfully installed"
-fi
-
-dnf install nginx -y &>>$LOGFILE
-
-if [ $? -ne 0 ]
-then 
-    echo "ngnix insatllation Failed"
-else
-    echo "Nginish successfully installed"
-fi
-echo "is script proceeding?"
+    echo "Please run this script with Super User"
