@@ -12,7 +12,7 @@ N="\e[0m"
 echo "Script Started Executing at : $TIMESTAMP"
 
 VALIDATE (){
-    if [$1 -ne 0]
+    if [ $1 -ne 0 ]
     then
         echo -e "$2...$R Failure $N"
         exit 1
@@ -20,7 +20,7 @@ VALIDATE (){
         echo -e "$2...$G Success $N"
     fi
 }
-if [$USERID -ne 0]
+if [ $USERID -ne 0 ]
     then
         echo "Please run this script with Root access"
         exit 1
