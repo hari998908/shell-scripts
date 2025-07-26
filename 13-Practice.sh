@@ -1,7 +1,7 @@
 #!/bin/bash
 USERID=$(id -u)
 TIMESTAMP=$(date +%F:%H:%M:%S)
-SCRIPT_NAME=$(echo $0)
+SCRIPT_NAME=$(echo $0 | cut -d "." f1)
 LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
 
 R="\e[31m"
@@ -11,7 +11,7 @@ N="\e[0m"
 echo "Script Started Executing at: $TIMESTAMP"
 
 VALIDATE (){
-    if [$1 -ne 0]
+    if [ $1 -ne 0 ]
     then
         echo -e "$2...$R Failure $N"
         exit 1
@@ -21,7 +21,7 @@ VALIDATE (){
 }
 
 
-if [$USERID -ne 0]
+if [ $USERID -ne 0 ]
 then
     echo "Please run this script with Super User"
     exit 1
