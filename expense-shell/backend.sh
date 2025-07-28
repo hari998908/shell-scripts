@@ -64,7 +64,7 @@ VALIDATE $? "Extracting Back-End Code"
 npm install &>>$LOGFILE
 VALIDATE $? "Installing Node JS Dependencies"
 
-cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
+cp /home/ec2-user/shell-scripts/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
 VALIDATE $? "Copied Backend Services"
 
 systemctl daemon-reload &>>$LOGFILE
@@ -79,7 +79,7 @@ VALIDATE $? "Enabling BackEnd"
 dnf install mysql -y &>>$LOGFILE
 VALIDATE $? "Installing MYSQL Client"
 
-mysql -h db.daws78s.online -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
+mysql -h 172.31.18.57 -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
 VALIDATE $? "Schema loading"
 
 systemctl restart backend &>>$LOGFILE
