@@ -1,22 +1,20 @@
 #!/bin/bash
 
 USERID=$(id -u)
-DATE=$(date +%F:%H:%M:%S)
-SCRIPTNAME=$(echo $0 | cut -d "." -f1)
-LOGFILE=/tmp/$SCRIPTNAME-$DATE.log
-
-R="\e[31"
-G="\e[32"
-Y="\e[33"
-N="\e[0"
-
-echo "Script is started at: $DATE"
+TIMESTAMP=$(date +%F-%H-%M-%S)
+SCRIPT_NAME=$(echo $0 | cut -d "." -f1)
+LOGFILE=/tmp/$SCRIPT_NAME-$TIMESTAMP.log
+R="\e[31m"
+G="\e[32m"
+Y="\e[33m"
+N="\e[0m"
+echo "Please enter DB password:"
 read -s mysql_root_password
 
 VALIDATE(){
-    if [ $1 -ne 0 ]
-    then
-        echo -e "$2...$R FAILED $N"
+   if [ $1 -ne 0 ]
+   then
+        echo -e "$2...$R FAILURE $N"
         exit 1
     else
         echo -e "$2...$G SUCCESS $N"
@@ -25,33 +23,32 @@ VALIDATE(){
 
 if [ $USERID -ne 0 ]
 then
-    echo "Please login with the Root User"
-    exit 1
+    echo "Please run this script with root access."
+    exit 1 # manually exit if error comes.
 else
-    echo "You are the Root User"
+    echo "You are super user."
 fi
 
-dnf module disable Nodejs -y &>>$LOGFILE
-VALIDATE $? "Disabling Node JS Module"
+dnf module disable nodejs -y &>>$LOGFILE
+VALIDATE $? "Disabling default nodejs"
 
 dnf module enable nodejs:20 -y &>>$LOGFILE
-VALIDATE $? "Enabling NodeJS version:20"
+VALIDATE $? "Enabling nodejs:20 version"
 
 dnf install nodejs -y &>>$LOGFILE
-VALIDATE $? "Installning Node JS"
+VALIDATE $? "Installing nodejs"
 
-id expense
+id expense &>>$LOGFILE
 if [ $? -ne 0 ]
 then
-useradd expense &>>$LOGFILE
-VALIDATE $? "Creating Expense User"
-exit 1
-else 
-    echo -e "Expense Usr is already created...$Y SKIPPING $N"
+    useradd expense &>>$LOGFILE
+    VALIDATE $? "Creating expense user"
+else
+    echo -e "Expense user already created...$Y SKIPPING $N"
 fi
 
 mkdir -p /app &>>$LOGFILE
-VALIDATE "Creating App Directry"
+VALIDATE $? "Creating app directory"
 
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>>$LOGFILE
 VALIDATE $? "Downloading backend code"
@@ -59,31 +56,29 @@ VALIDATE $? "Downloading backend code"
 cd /app
 rm -rf /app/*
 unzip /tmp/backend.zip &>>$LOGFILE
-VALIDATE $? "Extracting Back-End Code"
+VALIDATE $? "Extracted backend code"
 
 npm install &>>$LOGFILE
-VALIDATE $? "Installing Node JS Dependencies"
+VALIDATE $? "Installing nodejs dependencies"
 
+#check your repo and path
 cp /home/ec2-user/shell-scripts/expense-shell/backend.service /etc/systemd/system/backend.service &>>$LOGFILE
-VALIDATE $? "Copied Backend Services"
+VALIDATE $? "Copied backend service"
 
 systemctl daemon-reload &>>$LOGFILE
 VALIDATE $? "Daemon Reload"
 
 systemctl start backend &>>$LOGFILE
-VALIDATE $? "Starting BackEnd"
+VALIDATE $? "Starting backend"
 
 systemctl enable backend &>>$LOGFILE
-VALIDATE $? "Enabling BackEnd"
+VALIDATE $? "Enabling backend"
 
 dnf install mysql -y &>>$LOGFILE
-VALIDATE $? "Installing MYSQL Client"
+VALIDATE $? "Installing MySQL Client"
 
-mysql -h 172.31.18.57 -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
+mysql -h  -uroot -p${mysql_root_password} < /app/schema/backend.sql &>>$LOGFILE
 VALIDATE $? "Schema loading"
 
 systemctl restart backend &>>$LOGFILE
-VALIDATE $? "Restarting Back-End Service"
-
-
-
+VALIDATE $? "Restarting Backend"
